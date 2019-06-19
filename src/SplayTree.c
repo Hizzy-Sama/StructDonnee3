@@ -138,6 +138,22 @@ SplayTree* ST_join(SplayTree* t1, SplayTree* t2)
 
 void ST_split(char* word, SplayTree* tree, SplayTree* t1, SplayTree* t2)
 {
+    ST_access(word, tree);
+
+    if(strcmp(word, tree->root->word) == 0)
+    {
+        // should not happend
+    }
+    if(strcmp(word, tree->root->word) < 0)
+    {
+        t1 = ST_init(tree->root->left_child);
+        t2 = ST_init(tree->root);
+    }
+    if(strcmp(word, tree->root->word) > 0)
+    {
+        t1 = ST_init(tree->root);
+        t2 = ST_init(tree->root->right_child);
+    }
 }
 
 void ST_insert(char* word, SplayTree* tree)
