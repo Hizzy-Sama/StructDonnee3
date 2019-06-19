@@ -210,84 +210,60 @@ SplayTree* ST_init(Data* root)
 
 Data* ST_rotate(Data* x, Data* y)
 {
-    //if(DEBUG) printf("---> ST_rotate\n");
     if(x == y->parent)
     {
-        if(y == x->left_child)
-        {
-            ST_rotateRight(x);
-        }
-        else if (y == x->right_child)
-        {
-            ST_rotateLeft(x);
-        }
+        return NULL;
     }
-    else if (y == x->parent)
+    if (y == x->parent)
     {
         if(x == y->left_child)
         {
-            ST_rotateRight(y);
+            x = ST_rotateRight(x);
         }
         else if (x == y->right_child)
         {
-            ST_rotateLeft(y);
+            x = ST_rotateLeft(x);
         }
     }
-    return NULL;
+    return x;
 }
 
 Data* ST_rotateLeft(Data* x)
 {
     if(DEBUG) printf("---> ST_rotateLeft\n");
-    Data* y = x->right_child;
-    x->right_child = y->left_child;
-    if(y->left_child != NULL)
-    {
-        y->left_child->parent = x;
-    }
-    y->parent = x->parent;
-    if(x->parent == NULL)
-    {
-        x->tree->root = y;
-    }
-    else if(ST_isLeftChild(x))
-    {
-        x->parent->left_child = y;
-    }
-    else
-    {
-        x->parent->right_child = y;
-    }
-    y->left_child = x;
-    x->parent = y;
-    return y;
+    Data* y = x->parent;
+
+    y->right_child = x->left_child;
+    if(y->right_child != NULL) y->right_child->parent = y;
+
+    if(y->parent == NULL)  x->tree->root = x;
+    else if(ST_isLeftChild(y)) y->parent->left_child = x;
+    else if(ST_isRightChild(y)) y->parent->right_child = x;
+    x->parent = y->parent;
+
+    x->left_child = y;
+    y->parent = x;
+
+    return x;
 }
 
 Data* ST_rotateRight(Data* x)
 {
     if(DEBUG) printf("---> ST_rotateRight\n");
-    Data* y = x->left_child;
-    x->left_child = y->right_child;
-    if(y->right_child != NULL)
-    {
-        y->right_child->parent = x;
-    }
-    y->parent = x->parent;
-    if(x->parent == NULL)
-    {
-        x->tree->root = y;
-    }
-    else if(ST_isRightChild(x))
-    {
-        x->parent->right_child = y;
-    }
-    else
-    {
-        x->parent->left_child = y;
-    }
-    y->right_child = x;
-    x->parent = y;
-    return y;
+    Data* y = x->parent;
+
+    y->left_child = x->right_child;
+    if(y->left_child != NULL) y->left_child->parent = y;
+
+    if(y->parent == NULL)  x->tree->root = x;
+    else if(ST_isLeftChild(y)) y->parent->left_child = x;
+    else if(ST_isRightChild(y)) y->parent->right_child = x;
+    x->parent = y->parent;
+
+    x->right_child = y;
+    y->parent = x;
+
+    return x;
 }
 
 bool ST_isRightChild(Data* d)
