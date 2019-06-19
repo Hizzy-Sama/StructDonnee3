@@ -6,6 +6,7 @@ typedef struct donnee
 	char* cle;
 	int valeur;
 	struct donnee* suivant;
+	struct donnee* parent;
 } Data;
 
 typedef struct splaytree
