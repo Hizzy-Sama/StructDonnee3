@@ -23,11 +23,11 @@ typedef struct splaytree
 } SplayTree;
 
 void ST_splay(Data* x);
-Data* ST_access(char* key, SplayTree* tree); //nullable
+Data* ST_access(char* word, SplayTree* tree); //nullable
 SplayTree* ST_joint(SplayTree* t1, SplayTree* t2);
-void ST_split(char* key, SplayTree* tree, SplayTree* t1, SplayTree* t2);
-void ST_insert(char* key, SplayTree* tree);
-void ST_delete(char* key, SplayTree* tree);
+void ST_split(char* word, SplayTree* tree, SplayTree* t1, SplayTree* t2);
+void ST_insert(char* word, SplayTree* tree);
+void ST_delete(char* word, SplayTree* tree);
 
 void ST_rotate(Data*, Data*);
 void ST_rotateLeft(Data*, Data*);

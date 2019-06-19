@@ -108,7 +108,7 @@ void ST_splay(Data* x)
     }
 }
 
-Data* ST_access(char* key, SplayTree* tree)
+Data* ST_access(char* word, SplayTree* tree)
 {
     return NULL;
 }
@@ -118,15 +118,15 @@ SplayTree* ST_joint(SplayTree* t1, SplayTree* t2)
     return NULL;
 }
 
-void ST_split(char* key, SplayTree* tree, SplayTree* t1, SplayTree* t2)
+void ST_split(char* word, SplayTree* tree, SplayTree* t1, SplayTree* t2)
 {
 }
 
-void ST_insert(char* key, SplayTree* tree)
+void ST_insert(char* word, SplayTree* tree)
 {
 }
 
-void ST_delete(char* key, SplayTree* tree)
+void ST_delete(char* word, SplayTree* tree)
 {
-    ST_access(key, tree)
+    ST_access(word, tree)
 }
