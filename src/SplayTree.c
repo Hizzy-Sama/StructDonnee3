@@ -152,13 +152,19 @@ void ST_insert(char* word, SplayTree* tree)
 
     root->left_child = t1->root;
     root->right_child = t2->root;
+
+    free(t1);
+    free(t2);
 }
 
 void ST_delete(char* word, SplayTree* tree)
 {
     Data* root = ST_access(word, tree);
+    
     SplayTree* t1 = ST_init(root->left_child);
     SplayTree* t2 = ST_init(root->right_child);
+    
     free(root);
+    
     join(t1, t2);
 }
