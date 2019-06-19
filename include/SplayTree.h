@@ -29,4 +29,10 @@ void ST_split(char* cle, SplayTree* tree, SplayTree* t1, SplayTree* t2);
 void ST_insert(char* cle, SplayTree* tree);
 void ST_delete(char* cle, SplayTree* tree);
 
+void ST_rotate(Data*, Data*);
+void ST_rotateLeft(Data*, Data*);
+void ST_rotateRight(Data*, Data*);
+bool ST_isRightChild(Data*);
+bool ST_isLeftChild(Data*);
+
 #endif
