@@ -128,7 +128,39 @@ void ST_splay(Data* x)
 
 Data* ST_access(char* word, SplayTree* tree)
 {
-    return NULL;
+    Data* x = tree->root;
+    
+    int cmp = 0;
+    while ((cmp = strcmp(word, x->word)) != 0)
+    {
+        if(cmp < 1)
+        {
+            if(x->left_child != NULL)
+            {
+                x = x->left_child;
+            }
+            else
+            {
+                splay(x);
+                return NULL;
+            }
+        }
+        if(cmp > 1)
+        {
+            if(x->right_child != NULL)
+            {
+                x = x->right_child;
+            }
+            else
+            {
+                splay(x);
+                return NULL;
+            }
+        }
+    }
+    
+    splay(x);
+    return x;
 }
 
 SplayTree* ST_join(SplayTree* t1, SplayTree* t2)
