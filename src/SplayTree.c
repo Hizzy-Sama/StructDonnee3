@@ -133,13 +133,31 @@ Data* ST_access(char* word, SplayTree* tree)
 
 SplayTree* ST_join(SplayTree* t1, SplayTree* t2)
 {
-    return NULL;
+    // Sort t1
+    Data* ptr = t1->root;
+    while(ptr->right_child != NULL) ptr = ptr->right_child;
+    splay(ptr);
+
+    // Join
+    if(t1->root->right_child = NULL)
+    {
+        t1->root->right_child = t2->root;
+    }
+    else
+    {
+        // should not happend
+    }
+
+    free(t2);
+    return t1;
 }
 
 void ST_split(char* word, SplayTree* tree, SplayTree* t1, SplayTree* t2)
 {
+    // Sort the tree
     ST_access(word, tree);
 
+    // Split
     if(strcmp(word, tree->root->word) == 0)
     {
         // should not happend
