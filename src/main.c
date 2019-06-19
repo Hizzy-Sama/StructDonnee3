@@ -180,42 +180,38 @@ int main(int argc, const char* argv[])
 		return 1;
 	}
 
-	/*
 	// INIT
 	char str[MAXCHAR];
 	char *word;
-	//unsigned int max = 0;
+	char delimiters[] = " \n,.';!:";
+	char key[16];
 	time_t start, end;
+
+	// START MEASURING TIME
     start = clock();
+	// - - - - - - - - - - /
 
-    //HashMap* Hmap = newHashMap(TABLE_SIZE);
+	SplayTree* tree;
+	ST_init(tree);
 
-	// DATA GATHERING -> HASHTABLE
+	// DATA GATHERING -> SPLAY TREE
 	while (fgets(str, MAXCHAR, fp) != NULL)
 	{
-		//printf("%s", str);
-
 		//découpe en mots
-		char delimiters[] = " \n,.';!:";
 		word = strtok(str, delimiters);
 		while (word != NULL)
 		{
-			//if(strlen(word) > max) { max = strlen(word); }
-
-			//=========================================================/
-			//insérer dans la table de hashage, clé = word, valeur += 1
-            char key[16];
+			//===================/
             strcpy(key, word);
-            //HASHMAP_inserer(Hmap, key, 1);
-			//=========================================================/
+            ST_add(key, tree);
+			//===================/
 
 			//printf("'%s'\n", word);
 			word = strtok(NULL, delimiters);
-
 		}
 	}
 	fclose(fp);
-	//printf("%i", max);
+	/*
     //analyseHashMap(Hmap);
 
 	// HEAP-MAX
@@ -242,7 +238,9 @@ int main(int argc, const char* argv[])
 	// DISPLAY WORD-OCCURENCE (most used first)
 	HEAP_afficherDonnees(&h);
 
+	// STOP MEASURING TIME
 	end = clock();
+	// - - - - - - - - - /
 
 	printInfo(
 		Hmap->size, //Taille

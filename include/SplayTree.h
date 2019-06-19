@@ -10,7 +10,7 @@ struct splaytree;
 typedef struct donnee
 {
 	char* word;
-	int occur;
+	unsigned int occur;
 	struct donnee* right_child;
 	struct donnee* left_child;
 	struct donnee* parent;
@@ -29,6 +29,8 @@ SplayTree* ST_join(SplayTree* t1, SplayTree* t2);
 void ST_split(char* word, SplayTree* tree, SplayTree* t1, SplayTree* t2);
 void ST_insert(char* word, SplayTree* tree);
 void ST_delete(char* word, SplayTree* tree);
+
+void ST_add(char* word, SplayTree* tree);
 
 Data* ST_newData();
 SplayTree* ST_init(Data* root);

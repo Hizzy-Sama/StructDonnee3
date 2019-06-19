@@ -1,99 +1,5 @@
 #include <SplayTree.h>
 
-Data* ST_newData()
-{
-    Data* data = malloc(sizeof(Data));
-    data->word = "";
-    data->occur=0;
-    data->left_child = NULL;
-    data->right_child = NULL;
-    data->parent = NULL;
-    data->tree = NULL;
-}
-
-SplayTree* ST_init(Data* root)
-{
-    SplayTree* tree = malloc(sizeof(SplayTree));
-    tree->root = root;
-    return tree;
-}
-
-void ST_rotate(Data* x, Data* y)
-{
-    if(y == x->right_child)
-    {
-        ST_rotateLeft(x, y);
-    }
-    if(y == x->left_child)
-    {
-        ST_rotateRight(x, y);
-    }
-    if(x == y->right_child)
-    {
-        ST_rotateLeft(y, x);
-    }
-    if(x == y->left_child)
-    {
-        ST_rotateRight(y, x);
-    }
-}
-
-void ST_rotateLeft(Data* x, Data* y)
-{
-    x->right_child = y->left_child;
-    if(y->left_child != NULL)
-    {
-        y->left_child->parent = x;
-    }
-    y->parent = x->parent;
-    if(x->parent == NULL)
-    {
-        x->tree->root = y;
-    }
-    else if(ST_isLeftChild(x))
-    {
-        x->parent->left_child = y;
-    }
-    else
-    {
-        x->parent->right_child = y;
-    }
-    y->left_child = x;
-    x->parent = y;
-}
-void ST_rotateRight(Data* x, Data* y)
-{
-    x->left_child = y->right_child;
-    if(y->right_child != NULL)
-    {
-        y->right_child->parent = x;
-    }
-    y->parent = x->parent;
-    if(x->parent == NULL)
-    {
-        x->tree->root = y;
-    }
-    else if(ST_isRightChild(x))
-    {
-        x->parent->right_child = y;
-    }
-    else
-    {
-        x->parent->left_child = y;
-    }
-    y->right_child = x;
-    x->parent = y;
-}
-
-bool ST_isRightChild(Data* d)
-{
-    return (d == d->parent->right_child);
-}
-bool ST_isLeftChild(Data* d)
-{
-    return (d == d->parent->left_child);
-}
-
 void ST_splay(Data* x)
 {
     while(x != x->tree->root)
@@ -233,4 +139,113 @@ void ST_delete(char* word, SplayTree* tree)
     free(root);
     
     ST_join(t1, t2);
+}
+
+void ST_add(char* word, SplayTree* tree)
+{
+    Data* entry = ST_access(word, tree);
+
+    if(entry = NULL)
+    {
+        ST_insert(word, tree);
+    }
+    else
+    {
+        entry->occur++;
+    }
+    
+}
+
+Data* ST_newData()
+{
+    Data* data = malloc(sizeof(Data));
+    data->word = "";
+    data->occur=0;
+    data->left_child = NULL;
+    data->right_child = NULL;
+    data->parent = NULL;
+    data->tree = NULL;
+}
+
+SplayTree* ST_init(Data* root)
+{
+    SplayTree* tree = malloc(sizeof(SplayTree));
+    tree->root = root;
+    return tree;
+}
+
+void ST_rotate(Data* x, Data* y)
+{
+    if(y == x->right_child)
+    {
+        ST_rotateLeft(x, y);
+    }
+    if(y == x->left_child)
+    {
+        ST_rotateRight(x, y);
+    }
+    if(x == y->right_child)
+    {
+        ST_rotateLeft(y, x);
+    }
+    if(x == y->left_child)
+    {
+        ST_rotateRight(y, x);
+    }
+}
+
+void ST_rotateLeft(Data* x, Data* y)
+{
+    x->right_child = y->left_child;
+    if(y->left_child != NULL)
+    {
+        y->left_child->parent = x;
+    }
+    y->parent = x->parent;
+    if(x->parent == NULL)
+    {
+        x->tree->root = y;
+    }
+    else if(ST_isLeftChild(x))
+    {
+        x->parent->left_child = y;
+    }
+    else
+    {
+        x->parent->right_child = y;
+    }
+    y->left_child = x;
+    x->parent = y;
+}
+void ST_rotateRight(Data* x, Data* y)
+{
+    x->left_child = y->right_child;
+    if(y->right_child != NULL)
+    {
+        y->right_child->parent = x;
+    }
+    y->parent = x->parent;
+    if(x->parent == NULL)
+    {
+        x->tree->root = y;
+    }
+    else if(ST_isRightChild(x))
+    {
+        x->parent->right_child = y;
+    }
+    else
+    {
+        x->parent->left_child = y;
+    }
+    y->right_child = x;
+    x->parent = y;
+}
+
+bool ST_isRightChild(Data* d)
+{
+    return (d == d->parent->right_child);
+}
+bool ST_isLeftChild(Data* d)
+{
+    return (d == d->parent->left_child);
 }
