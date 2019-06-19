@@ -1,12 +1,18 @@
 #ifndef SPLAYTREE_H
 #define SPLAYTREE_H
 
+#include <stdlib.h>
+
+struct splaytree;
+
 typedef struct donnee
 {
-	char* cle;
-	int valeur;
-	struct donnee* suivant;
+	char* key;
+	int value;
+	struct donnee* right_child;
+	struct donnee* left_child;
 	struct donnee* parent;
+    struct splaytree* tree;
 } Data;
 
 typedef struct splaytree
