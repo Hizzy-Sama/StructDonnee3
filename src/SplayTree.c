@@ -3,12 +3,75 @@
 #define DEBUG true
 #if DEBUG
 #include <stdio.h>
+typedef struct file {
+    int index;
+    Data* tab[100];
+} File;
+
+File* File_init();
+File* File_init()
+{
+    File* f = malloc(sizeof(File));
+    f->index = -1;
+    return f;
+}
+
+void enfiler(Data* d, File* f);
+void enfiler(Data* d, File* f)
+{
+    f->index++;
+    f->tab[f->index] = d;
+}
+
+Data* defiler(File* f);
+Data* defiler(File* f)
+{
+    Data* d = f->tab[f->index];
+    f->index--;
+    return d;
+}
+
+void parcoursLargeur(SplayTree* tree, void(*operation)(Data*));
+void parcoursLargeur(SplayTree* tree, void(*operation)(Data*))
+{
+    File* f = File_init();
+    enfiler(tree->root, f);
+    while(f->index >= 0)
+    {
+        Data* d = defiler(f);
+        
+        (*operation)(d);
+
+        if(d->left_child != NULL)
+        {
+            enfiler(d->left_child, f);
+        }
+        if(d->right_child != NULL)
+        {
+            enfiler(d->right_child, f);
+        }
+    }
+}
+
+void operation1(Data* d);
+void operation1(Data* d)
+{
+    printf("%s - ", d->word);
+}
+
+/*
+    void (*op)(Data*) = &operation1;
+    printf("\n");
+    parcoursLargeur(x->tree, op);
+    printf("\n");
+*/
+
 #endif
 
 void ST_splay(Data* x)
 {
     if(DEBUG) printf("---> ST_splay : %s\n", x->word);
-    if(DEBUG) printf("--->\troot %s\n", x->tree->root->word);
+
     while(x != x->tree->root)
     {
         // Cas 1 : zig
@@ -234,14 +297,24 @@ Data* ST_rotate(Data* x, Data* y)
 Data* ST_rotateLeft(Data* x)
 {
     if(DEBUG) printf("---> ST_rotateLeft : %s\n", x->word);
+    
     Data* y = x->parent;
 
     y->right_child = x->left_child;
     if(y->right_child != NULL) y->right_child->parent = y;
 
-    if(y->parent == NULL)  x->tree->root = x;
-    else if(ST_isLeftChild(y)) y->parent->left_child = x;
-    else if(ST_isRightChild(y)) y->parent->right_child = x;
+    if(y->parent == NULL)
+    {
+        x->tree->root = x;
+    }
+    else if(ST_isLeftChild(y))
+    {
+        y->parent->left_child = x;
+    }
+    else if(ST_isRightChild(y))
+    {
+        y->parent->right_child = x;
+    }
     x->parent = y->parent;
 
     x->left_child = y;
@@ -253,14 +326,24 @@ Data* ST_rotateLeft(Data* x)
 Data* ST_rotateRight(Data* x)
 {
     if(DEBUG) printf("---> ST_rotateRight : %s\n", x->word);
+
     Data* y = x->parent;
 
     y->left_child = x->right_child;
     if(y->left_child != NULL) y->left_child->parent = y;
 
-    if(y->parent == NULL)  x->tree->root = x;
-    else if(ST_isLeftChild(y)) y->parent->left_child = x;
-    else if(ST_isRightChild(y)) y->parent->right_child = x;
+    if(y->parent == NULL)
+    {
+        x->tree->root = x;
+    }
+    else if(ST_isLeftChild(y))
+    {
+        y->parent->left_child = x;
+    }
+    else if(ST_isRightChild(y))
+    {
+        y->parent->right_child = x;
+    }
     x->parent = y->parent;
 
     x->right_child = y;
