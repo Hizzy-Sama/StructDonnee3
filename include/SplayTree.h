@@ -7,8 +7,8 @@ struct splaytree;
 
 typedef struct donnee
 {
-	char* key;
-	int value;
+	char* word;
+	int occur;
 	struct donnee* right_child;
 	struct donnee* left_child;
 	struct donnee* parent;
