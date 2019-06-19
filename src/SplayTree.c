@@ -7,7 +7,8 @@
 
 void ST_splay(Data* x)
 {
-    if(DEBUG) printf("---> ST_splay\n");
+    if(DEBUG) printf("---> ST_splay : %s\n", x->word);
+    if(DEBUG) printf("--->\troot %s\n", x->tree->root->word);
     while(x != x->tree->root)
     {
         // Cas 1 : zig
@@ -27,13 +28,14 @@ void ST_splay(Data* x)
                 continue;
             }
             // Cas 3 : zig-zag
-            if((ST_isLeftChild(x) && ST_isRightChild(x->parent))
+            else if((ST_isLeftChild(x) && ST_isRightChild(x->parent))
                 || (ST_isRightChild(x) && ST_isLeftChild(x->parent)))
             {
                 ST_rotate(x, x->parent);
                 ST_rotate(x, x->parent);
                 continue;
             }
+            else break;
         }
     }
 }
@@ -102,7 +104,7 @@ SplayTree* ST_join(SplayTree* t1, SplayTree* t2)
 
 void ST_split(char* word, SplayTree* tree, SplayTree* t1, SplayTree* t2)
 {
-    if(DEBUG) printf("---> ST_split\n");
+    if(DEBUG) printf("---> ST_split : %s\n", word);
     // Sort the tree
     ST_access(word, tree);
 
@@ -129,16 +131,17 @@ void ST_split(char* word, SplayTree* tree, SplayTree* t1, SplayTree* t2)
 void ST_insert(char* word, SplayTree* tree)
 {
     if(DEBUG) printf("---> ST_insert\n");
+    if(DEBUG && tree->root != NULL) printf("--->\troot = %s\n", tree->root->word);
     Data* entry = ST_access(word, tree);
 
     if(entry != NULL)
     {
-        if(DEBUG) printf("---> ST_insert : !NULL\n");
+        if(DEBUG) printf("---> ST_insert : ++\n");
         entry->occur++;
     }
     else
     {
-        if(DEBUG) printf("---> ST_insert : NULL\n");
+        if(DEBUG) printf("---> ST_insert : new entry\n");
         SplayTree* t1 = ST_init(NULL);
         SplayTree* t2 = ST_init(NULL);
         ST_split(word, tree, t1, t2);
@@ -230,7 +233,7 @@ Data* ST_rotate(Data* x, Data* y)
 
 Data* ST_rotateLeft(Data* x)
 {
-    if(DEBUG) printf("---> ST_rotateLeft\n");
+    if(DEBUG) printf("---> ST_rotateLeft : %s\n", x->word);
     Data* y = x->parent;
 
     y->right_child = x->left_child;
@@ -249,7 +252,7 @@ Data* ST_rotateLeft(Data* x)
 
 Data* ST_rotateRight(Data* x)
 {
-    if(DEBUG) printf("---> ST_rotateRight\n");
+    if(DEBUG) printf("---> ST_rotateRight : %s\n", x->word);
     Data* y = x->parent;
 
     y->left_child = x->right_child;
