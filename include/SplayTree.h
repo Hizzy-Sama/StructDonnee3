@@ -17,7 +17,7 @@ typedef struct donnee
 
 typedef struct splaytree
 {
-    Data root;
+    Data* root;
     size_t size;
 } SplayTree;
 

@@ -2,6 +2,10 @@
 
 void ST_splay(Data* x)
 {
+    while(x != x->tree->root)
+    {
+        
+    }
 }
 
 Data* ST_access(char* cle, SplayTree* tree)
