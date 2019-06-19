@@ -1,5 +1,16 @@
 #include <SplayTree.h>
 
+Data* ST_newData()
+{
+    Data* data = malloc(sizeof(Data));
+    data->word = "";
+    data->occur=0;
+    data->left_child = NULL;
+    data->right_child = NULL;
+    data->parent = NULL;
+    data->tree = NULL;
+}
+
 SplayTree* ST_init(Data* root)
 {
     SplayTree* tree = malloc(sizeof(SplayTree));
@@ -120,7 +131,7 @@ Data* ST_access(char* word, SplayTree* tree)
     return NULL;
 }
 
-SplayTree* ST_joint(SplayTree* t1, SplayTree* t2)
+SplayTree* ST_join(SplayTree* t1, SplayTree* t2)
 {
     return NULL;
 }
@@ -131,6 +142,16 @@ void ST_split(char* word, SplayTree* tree, SplayTree* t1, SplayTree* t2)
 
 void ST_insert(char* word, SplayTree* tree)
 {
+    SplayTree* t1;
+    SplayTree* t2;
+    split(word, tree, t1, t2);
+
+    Data* root = ST_newData();
+    root->word = word;
+    root->occur = 1;
+
+    root->left_child = t1->root;
+    root->right_child = t2->root;
 }
 
 void ST_delete(char* word, SplayTree* tree)
@@ -139,5 +160,5 @@ void ST_delete(char* word, SplayTree* tree)
     SplayTree* t1 = ST_init(root->left_child);
     SplayTree* t2 = ST_init(root->right_child);
     free(root);
-    joint(t1, t2);
+    join(t1, t2);
 }
