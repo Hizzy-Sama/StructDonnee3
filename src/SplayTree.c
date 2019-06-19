@@ -141,7 +141,7 @@ Data* ST_access(char* word, SplayTree* tree)
             }
             else
             {
-                splay(x);
+                ST_splay(x);
                 return NULL;
             }
         }
@@ -153,13 +153,13 @@ Data* ST_access(char* word, SplayTree* tree)
             }
             else
             {
-                splay(x);
+                ST_splay(x);
                 return NULL;
             }
         }
     }
     
-    splay(x);
+    ST_splay(x);
     return x;
 }
 
@@ -168,7 +168,7 @@ SplayTree* ST_join(SplayTree* t1, SplayTree* t2)
     // Sort t1
     Data* ptr = t1->root;
     while(ptr->right_child != NULL) ptr = ptr->right_child;
-    splay(ptr);
+    ST_splay(ptr);
 
     // Join
     if(t1->root->right_child = NULL)
@@ -210,10 +210,10 @@ void ST_insert(char* word, SplayTree* tree)
 {
     SplayTree* t1;
     SplayTree* t2;
-    split(word, tree, t1, t2);
+    ST_split(word, tree, t1, t2);
 
     Data* root = ST_newData();
-    root->word = word;
+    strcpy(root->word, word);
     root->occur = 1;
 
     root->left_child = t1->root;
@@ -232,5 +232,5 @@ void ST_delete(char* word, SplayTree* tree)
     
     free(root);
     
-    join(t1, t2);
+    ST_join(t1, t2);
 }

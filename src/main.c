@@ -3,7 +3,7 @@
 #include <string.h>
 #include <time.h>
 
-#include <HashMap.h>
+#include <Splaytree.h>
 
 #define MAXCHAR 1024
 
@@ -180,6 +180,7 @@ int main(int argc, const char* argv[])
 		return 1;
 	}
 
+	/*
 	// INIT
 	char str[MAXCHAR];
 	char *word;
@@ -187,7 +188,7 @@ int main(int argc, const char* argv[])
 	time_t start, end;
     start = clock();
 
-    HashMap* Hmap = newHashMap(TABLE_SIZE);
+    //HashMap* Hmap = newHashMap(TABLE_SIZE);
 
 	// DATA GATHERING -> HASHTABLE
 	while (fgets(str, MAXCHAR, fp) != NULL)
@@ -205,7 +206,7 @@ int main(int argc, const char* argv[])
 			//insérer dans la table de hashage, clé = word, valeur += 1
             char key[16];
             strcpy(key, word);
-            HASHMAP_inserer(Hmap, key, 1);
+            //HASHMAP_inserer(Hmap, key, 1);
 			//=========================================================/
 
 			//printf("'%s'\n", word);
@@ -215,11 +216,11 @@ int main(int argc, const char* argv[])
 	}
 	fclose(fp);
 	//printf("%i", max);
-    analyseHashMap(Hmap);
+    //analyseHashMap(Hmap);
 
 	// HEAP-MAX
 	MaxHeap h;
-	HEAP_initialiser(&h, Hmap->n);
+	//HEAP_initialiser(&h, Hmap->n);
 
     for(unsigned int i = 0; i < Hmap->size; i++)
 	{
@@ -249,6 +250,7 @@ int main(int argc, const char* argv[])
 		Hmap->max_length, // longueur max
 		(double)(end - start) / CLOCKS_PER_SEC // Temps d'éxec
 	);
+	*/
 
 	return 0;
 }
