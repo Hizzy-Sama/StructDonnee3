@@ -2,6 +2,7 @@
 #define SPLAYTREE_H
 
 #include <stdlib.h>
+#include <stdbool.h>
 
 struct splaytree;
 
