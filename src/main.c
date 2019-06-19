@@ -132,19 +132,6 @@ void HEAP_afficherDonnees(MaxHeap *h) {
     h->count = previous_count;
 }
 
-void printInfo(unsigned int taille, double remplissage, unsigned int longueurMax, double execTime)
-{
-	printf("\n");
-	printf("============== Infos ==============\n");
-	printf("Taille de la table de hachage : %i\n", taille);
-	printf("Facteur de remplissage : %f\n", remplissage);
-	printf("Plus longue liste : %i\n", longueurMax);
-	printf("Temps d'execution : %f\n", execTime);
-	printf("===================================\n");
-	printf("| %i | %f | %i | %f |\n", taille, remplissage, longueurMax, execTime);
-	printf("\n");
-}
-
 // test du monceau
 /*
 int main() {
@@ -185,54 +172,52 @@ int main(int argc, const char* argv[])
 	char *word;
 	char delimiters[] = " \n,.';!:";
 	char key[16];
-	time_t start, end;
+	clock_t start, end;
+
+	printf("============================\n");
+	printf("Lecture de %s\n", filename);
+	printf("\n");
+	printf("============================\n");
 
 	// START MEASURING TIME
     start = clock();
 	// - - - - - - - - - - /
 
-	SplayTree* tree;
-	ST_init(tree);
+	SplayTree* tree = ST_init(NULL);
 
 	// DATA GATHERING -> SPLAY TREE
 	while (fgets(str, MAXCHAR, fp) != NULL)
 	{
-		//découpe en mots
+		//string -> words
 		word = strtok(str, delimiters);
 		while (word != NULL)
 		{
+			printf("trying : '%s'\n", word);
+
 			//===================/
             strcpy(key, word);
-            ST_add(key, tree);
+            ST_insert(key, tree);
 			//===================/
 
-			//printf("'%s'\n", word);
+			printf("'%s'\n", word);
 			word = strtok(NULL, delimiters);
 		}
 	}
 	fclose(fp);
-	/*
-    //analyseHashMap(Hmap);
 
-	// HEAP-MAX
+	// SPLAY TREE -> HEAP-MAX
 	MaxHeap h;
-	//HEAP_initialiser(&h, Hmap->n);
+	HEAP_initialiser(&h, tree->size);
 
-    for(unsigned int i = 0; i < Hmap->size; i++)
+	while(tree->root != NULL)
 	{
-		if(Hmap->table[i] != NULL)
-		{
-			HASHMAP_DATA* list_ptr = Hmap->table[i];
-			while(list_ptr != NULL)
-			{
-                HEAP_DATA d;
-                d.compte = list_ptr->valeur;
-                d.mot = list_ptr->cle;
-                HEAP_inserer(&h, d);
-				if(list_ptr->suivant != NULL) list_ptr = list_ptr->suivant;
-				else break;
-			}
-		}
+		HEAP_DATA d;
+		d.compte = tree->root->occur;
+		d.mot = "";
+		strcpy(d.mot, tree->root->word);
+		HEAP_inserer(&h, d);
+
+		ST_delete(tree->root->word, tree);
 	}
 
 	// DISPLAY WORD-OCCURENCE (most used first)
@@ -242,13 +227,11 @@ int main(int argc, const char* argv[])
 	end = clock();
 	// - - - - - - - - - /
 
-	printInfo(
-		Hmap->size, //Taille
-		Hmap->remplissage, //remplissage
-		Hmap->max_length, // longueur max
-		(double)(end - start) / CLOCKS_PER_SEC // Temps d'éxec
-	);
-	*/
+	printf("============================\n");
+	printf("\n");
+	printf("Temps d'execution : %f.6\n",
+		(float)(end - start) / (float)CLOCKS_PER_SEC);
+	printf("============================\n");
 
 	return 0;
 }

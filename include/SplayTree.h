@@ -30,13 +30,11 @@ void ST_split(char* word, SplayTree* tree, SplayTree* t1, SplayTree* t2);
 void ST_insert(char* word, SplayTree* tree);
 void ST_delete(char* word, SplayTree* tree);
 
-void ST_add(char* word, SplayTree* tree);
-
 Data* ST_newData();
 SplayTree* ST_init(Data* root);
-void ST_rotate(Data*, Data*);
-void ST_rotateLeft(Data*, Data*);
-void ST_rotateRight(Data*, Data*);
+Data* ST_rotate(Data*, Data*);
+Data* ST_rotateLeft(Data*);
+Data* ST_rotateRight(Data*);
 bool ST_isRightChild(Data*);
 bool ST_isLeftChild(Data*);
 
