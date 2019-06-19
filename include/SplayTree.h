@@ -29,6 +29,7 @@ void ST_split(char* word, SplayTree* tree, SplayTree* t1, SplayTree* t2);
 void ST_insert(char* word, SplayTree* tree);
 void ST_delete(char* word, SplayTree* tree);
 
+SplayTree* ST_init(Data* root);
 void ST_rotate(Data*, Data*);
 void ST_rotateLeft(Data*, Data*);
 void ST_rotateRight(Data*, Data*);

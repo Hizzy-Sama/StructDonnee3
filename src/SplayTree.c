@@ -1,5 +1,12 @@
 #include <SplayTree.h>
 
+SplayTree* ST_init(Data* root)
+{
+    SplayTree* tree = malloc(sizeof(SplayTree));
+    tree->root = root;
+    return tree;
+}
+
 void ST_rotate(Data* x, Data* y)
 {
     if(y == x->right_child)
@@ -128,5 +135,9 @@ void ST_insert(char* word, SplayTree* tree)
 
 void ST_delete(char* word, SplayTree* tree)
 {
-    ST_access(word, tree)
+    Data* root = ST_access(word, tree);
+    SplayTree* t1 = ST_init(root->left_child);
+    SplayTree* t2 = ST_init(root->right_child);
+    free(root);
+    joint(t1, t2);
 }
