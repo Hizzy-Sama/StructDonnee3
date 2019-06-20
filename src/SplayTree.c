@@ -1,7 +1,7 @@
 #include <SplayTree.h>
 
 #include <stdio.h>
-#define DEBUG false
+#define DEBUG true
 
 void ST_splay(Data* x)
 {
@@ -134,7 +134,7 @@ void ST_split(char* word, SplayTree* tree, SplayTree* t1, SplayTree* t2)
 
 void ST_insert(char* word, SplayTree* tree)
 {
-    if(DEBUG) printf("---> ST_insert\n");
+    if(DEBUG) printf("---> ST_insert : %s\n", word);
     Data* entry = ST_access(word, tree);
 
     if(entry != NULL)
@@ -240,7 +240,7 @@ Data* ST_rotate(Data* x)
 
 Data* ST_rotateLeft(Data* x)
 {
-    if(DEBUG) printf("---> ST_rotateLeft : %s\n", x->word);
+    //if(DEBUG) printf("---> ST_rotateLeft : %s\n", x->word);
     
     Data* y = x->parent;
 
@@ -276,7 +276,7 @@ Data* ST_rotateLeft(Data* x)
 
 Data* ST_rotateRight(Data* x)
 {
-    if(DEBUG) printf("---> ST_rotateRight : %s\n", x->word);
+    //if(DEBUG) printf("---> ST_rotateRight : %s\n", x->word);
     
     Data* y = x->parent;
 
