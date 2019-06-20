@@ -151,7 +151,11 @@ int main() {
 }
 */
 
-#define TABLE_SIZE 2027
+void operation1(Data* d)
+{
+    printf("%s - ", d->word);
+}
+
 int main(int argc, const char* argv[])
 {
 	// INPUT CHECK
@@ -170,7 +174,7 @@ int main(int argc, const char* argv[])
 	// INIT
 	char str[MAXCHAR];
 	char *word;
-	char delimiters[] = " \n,.';!:";
+	char delimiters[] = " \n,.';!:-";
 	char key[16];
 	clock_t start, end;
 
@@ -192,14 +196,21 @@ int main(int argc, const char* argv[])
 		word = strtok(str, delimiters);
 		while (word != NULL)
 		{
-			printf("trying : '%s'\n", word);
+			/*
+			if (strcmp(word, "platform") == 0)
+			{
+				test(tree);
+				return 0;
+			}
+			*/
+			//printf("trying : '%s'\n", word);
 
 			//===================/
             strcpy(key, word);
             ST_insert(key, tree);
 			//===================/
 
-			printf("'%s'\n", word);
+			//printf("'%s'\n", word);
 			word = strtok(NULL, delimiters);
 		}
 	}
@@ -209,19 +220,21 @@ int main(int argc, const char* argv[])
 	MaxHeap h;
 	HEAP_initialiser(&h, tree->size);
 
+	parcoursProfondeur(tree, &operation1);
+/*
 	while(tree->root != NULL)
 	{
 		HEAP_DATA d;
 		d.compte = tree->root->occur;
-		d.mot = "";
+		d.mot = malloc(sizeof(char[16]));
 		strcpy(d.mot, tree->root->word);
 		HEAP_inserer(&h, d);
 
 		ST_delete(tree->root->word, tree);
 	}
-
+*/
 	// DISPLAY WORD-OCCURENCE (most used first)
-	HEAP_afficherDonnees(&h);
+	//HEAP_afficherDonnees(&h);
 
 	// STOP MEASURING TIME
 	end = clock();
