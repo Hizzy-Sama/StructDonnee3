@@ -32,7 +32,6 @@ void ST_delete(char* word, SplayTree* tree);
 
 Data* ST_newData();
 SplayTree* ST_init(Data* root);
-Data* ST_rotate(Data*);
 Data* ST_rotateLeft(Data*);
 Data* ST_rotateRight(Data*);
 bool ST_isRightChild(Data*);

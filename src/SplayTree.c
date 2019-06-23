@@ -12,25 +12,42 @@ void ST_splay(Data* x)
         // Cas 1 : zig
         if(x->parent == x->tree->root)
         {
-            ST_rotate(x);
+            if(ST_isLeftChild(x))
+            {
+                ST_rotateRight(x);
+            }
+            else if (ST_isRightChild(x))
+            {
+                ST_rotateLeft(x);
+            }
             return;
         }
         else
         {
             // Cas 2 : zig-zig
-            if((ST_isLeftChild(x) && ST_isLeftChild(x->parent))
-                || (ST_isRightChild(x) && ST_isRightChild(x->parent)))
+            if(ST_isLeftChild(x) && ST_isLeftChild(x->parent))
             {
-                ST_rotate(x->parent);
-                ST_rotate(x);
+                ST_rotateRight(x->parent);
+                ST_rotateRight(x);
+                continue;
+            }
+            if(ST_isRightChild(x) && ST_isRightChild(x->parent))
+            {
+                ST_rotateLeft(x->parent);
+                ST_rotateLeft(x);
                 continue;
             }
             // Cas 3 : zig-zag
-            else if((ST_isLeftChild(x) && ST_isRightChild(x->parent))
-                || (ST_isRightChild(x) && ST_isLeftChild(x->parent)))
+            else if(ST_isLeftChild(x) && ST_isRightChild(x->parent))
             {
-                ST_rotate(x);
-                ST_rotate(x);
+                ST_rotateRight(x);
+                ST_rotateLeft(x);
+                continue;
+            }
+            if(ST_isRightChild(x) && ST_isLeftChild(x->parent))
+            {
+                ST_rotateLeft(x);
+                ST_rotateRight(x);
                 continue;
             }
             else break;
@@ -117,11 +134,13 @@ void ST_split(char* word, SplayTree* tree, SplayTree* t1, SplayTree* t2)
 
             t2->root = tree->root;
             t2->root->left_child = NULL;
+            //if(DEBUG) printf("---> ST_split : t2 = root\n");
         }
         else if(strcmp(word, tree->root->word) > 0)
         {
             t1->root = tree->root;
             t1->root->right_child = NULL;
+            //if(DEBUG) printf("---> ST_split : t1 = root\n");
 
             t2->root = tree->root->right_child;
         }
@@ -134,55 +153,50 @@ void ST_split(char* word, SplayTree* tree, SplayTree* t1, SplayTree* t2)
 
 void ST_insert(char* word, SplayTree* tree)
 {
-    if(DEBUG) printf("---> ST_insert : %s\n", word);
-    Data* entry = ST_access(word, tree);
+    //if(DEBUG) printf("---> ST_insert : %s\n", word);
+    SplayTree* t1 = ST_init(NULL);
+    SplayTree* t2 = ST_init(NULL);   
+    ST_split(word, tree, t1, t2);
 
-    if(entry != NULL)
+    if(tree->root != NULL)
     {
-        if(DEBUG) printf("---> ST_insert : ++\n");
-        entry->occur++;
-    }
-    else
-    {
-        if(DEBUG) printf("---> ST_insert : new entry\n");
-        SplayTree* t1 = ST_init(NULL);
-        SplayTree* t2 = ST_init(NULL);
-        ST_split(word, tree, t1, t2);
-
-        Data* new_root = ST_newData(tree);
-        new_root->word = malloc(sizeof(char[16]));
-        strcpy(new_root->word, word);
-        new_root->occur = 1;
-
-        new_root->left_child = t1->root;
-        if(new_root->left_child != NULL)
+        if(tree->root->word == word)
         {
-            new_root->left_child->parent = new_root;
+            tree->root->occur++;
+            //if(DEBUG) printf("--->\t%s : %d\n", entry->word, entry->occur);
+            
+            free(t1);
+            free(t2);
+            return;
         }
-
-        new_root->right_child = t2->root;
-        if(new_root->right_child != NULL)
-        {
-            new_root->right_child->parent = new_root;
-        }
-
-        new_root->tree = tree;
-        tree->root = new_root;
-        tree->size++;
-
-        free(t1);
-        free(t2);
     }
+    
+    // New root
+    Data* new_root = ST_newData(tree);
+    new_root->word = malloc(sizeof(char[16]));
+    strcpy(new_root->word, word);
+    new_root->occur = 1;
 
-    /*
-    if(strcmp(word, "platform") != 0)
+    // Children
+    new_root->left_child = t1->root;
+    if(new_root->left_child != NULL)
     {
-        void (*op)(Data*) = &operation1;
-        printf("\n");
-        parcoursLargeur(tree, op);
-        printf("\n");
+        new_root->left_child->parent = new_root;
     }
-    */
+    new_root->right_child = t2->root;
+    if(new_root->right_child != NULL)
+    {
+        new_root->right_child->parent = new_root;
+    }
+
+    // Link with the tree
+    new_root->tree = tree;
+    tree->root = new_root;
+    tree->size++;
+
+    //if(DEBUG) printf("--->\tnew entry\n");
+    free(t1);
+    free(t2);
 }
 
 void ST_delete(char* word, SplayTree* tree)
@@ -225,24 +239,10 @@ SplayTree* ST_init(Data* root)
     return tree;
 }
 
-Data* ST_rotate(Data* x)
-{
-    if(ST_isLeftChild(x))
-    {
-        x = ST_rotateRight(x);
-    }
-    else if (ST_isRightChild(x))
-    {
-        x = ST_rotateLeft(x);
-    }
-    return x;
-}
-
 Data* ST_rotateLeft(Data* x)
-{
-    //if(DEBUG) printf("---> ST_rotateLeft : %s\n", x->word);
-    
+{    
     Data* y = x->parent;
+    //if(DEBUG) printf("---> ST_rotateLeft : x = %s, y = %s\n", x->word, y->word);
 
     // child swap
     if(x->left_child != NULL)
@@ -276,9 +276,8 @@ Data* ST_rotateLeft(Data* x)
 
 Data* ST_rotateRight(Data* x)
 {
-    //if(DEBUG) printf("---> ST_rotateRight : %s\n", x->word);
-    
     Data* y = x->parent;
+    //if(DEBUG) printf("---> ST_rotateRight : x = %s, y = %s\n", x->word, y->word);
 
     // child swap
     if(x->right_child != NULL)
@@ -327,9 +326,9 @@ bool ST_isLeftChild(Data* d)
 void pp(Data* d, void(*operation)(Data*));
 void pp(Data* d, void(*operation)(Data*))
 {
-    (*operation)(d);
     if(d->left_child != NULL)
         pp(d->left_child, operation);
+    (*operation)(d);
     if(d->right_child != NULL)
         pp(d->right_child, operation);
 }

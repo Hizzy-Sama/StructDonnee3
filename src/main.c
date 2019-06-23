@@ -196,22 +196,14 @@ int main(int argc, const char* argv[])
 		word = strtok(str, delimiters);
 		while (word != NULL)
 		{
-			/*
-			if (strcmp(word, "platform") == 0)
-			{
-				test(tree);
-				return 0;
-			}
-			*/
-			//printf("trying : '%s'\n", word);
-
-			//===================/
             strcpy(key, word);
             ST_insert(key, tree);
-			//===================/
 
-			//printf("'%s'\n", word);
+			printf("'%s'\n", word);
 			word = strtok(NULL, delimiters);
+			
+			parcoursProfondeur(tree, &operation1);
+			printf("\n");
 		}
 	}
 	fclose(fp);
@@ -220,7 +212,9 @@ int main(int argc, const char* argv[])
 	MaxHeap h;
 	HEAP_initialiser(&h, tree->size);
 
+	printf("\n");
 	parcoursProfondeur(tree, &operation1);
+	printf("\n");
 /*
 	while(tree->root != NULL)
 	{
