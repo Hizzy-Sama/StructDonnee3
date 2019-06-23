@@ -151,9 +151,23 @@ int main() {
 }
 */
 
-void operation1(Data* d)
+void fillHeap(Data* d, MaxHeap* h)
 {
-    printf("%s - ", d->word);
+    if(d->left_child != NULL)
+	{
+        fillHeap(d->left_child, h);
+	}
+
+	HEAP_DATA hd;
+	hd.compte = d->occur;
+	hd.mot = malloc(sizeof(char[16]));
+	strcpy(hd.mot, d->word);
+	HEAP_inserer(h, hd);
+
+	if(d->right_child != NULL)
+	{
+        fillHeap(d->right_child, h);
+	}
 }
 
 int main(int argc, const char* argv[])
@@ -174,7 +188,7 @@ int main(int argc, const char* argv[])
 	// INIT
 	char str[MAXCHAR];
 	char *word;
-	char delimiters[] = " \n,.';!:-";
+	char delimiters[] = " \n,.';!:-?";
 	char key[16];
 	clock_t start, end;
 
@@ -199,11 +213,8 @@ int main(int argc, const char* argv[])
             strcpy(key, word);
             ST_insert(key, tree);
 
-			printf("'%s'\n", word);
+			//printf("'%s'\n", word);
 			word = strtok(NULL, delimiters);
-			
-			parcoursProfondeur(tree, &operation1);
-			printf("\n");
 		}
 	}
 	fclose(fp);
@@ -212,23 +223,10 @@ int main(int argc, const char* argv[])
 	MaxHeap h;
 	HEAP_initialiser(&h, tree->size);
 
-	printf("\n");
-	parcoursProfondeur(tree, &operation1);
-	printf("\n");
-/*
-	while(tree->root != NULL)
-	{
-		HEAP_DATA d;
-		d.compte = tree->root->occur;
-		d.mot = malloc(sizeof(char[16]));
-		strcpy(d.mot, tree->root->word);
-		HEAP_inserer(&h, d);
-
-		ST_delete(tree->root->word, tree);
-	}
-*/
+	fillHeap(tree->root, &h);
+	
 	// DISPLAY WORD-OCCURENCE (most used first)
-	//HEAP_afficherDonnees(&h);
+	HEAP_afficherDonnees(&h);
 
 	// STOP MEASURING TIME
 	end = clock();
@@ -236,7 +234,7 @@ int main(int argc, const char* argv[])
 
 	printf("============================\n");
 	printf("\n");
-	printf("Temps d'execution : %f.6\n",
+	printf("Temps d'execution : %f\n",
 		(float)(end - start) / (float)CLOCKS_PER_SEC);
 	printf("============================\n");
 
